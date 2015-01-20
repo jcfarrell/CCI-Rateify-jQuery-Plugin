@@ -16,26 +16,16 @@ Setting Up
 ----------
 The Rateify plugin relies on a div tag with specific id to generate the rates pane.
 
-Include the two .css files at the top of your document:
-	<link rel="stylesheet" href="rateify.css" type="text/css" />
-	<link rel="stylesheet" href="lib/jquery-ui.min.css" type="text/css" />
-
-Include the three .js files at the close of your <head> tag:
-	<script src="lib/jquery-1.7.2.min.js"></script> 
-	<script src="lib/jquery-ui.min.js"></script> 
-	<script src="jquery.rateify.js" type="text/javascript"></script>
-
-Place the div within your html document wherever you’d like it to display:
-	 <div id="rates">
-            <noscript><div id="defaultwwm">Display this panel when javascript isn't loaded</div></noscript>
-        </div>
+Include the two .css files at the top of your document.
+Include the three .js files at the close of your head tag.
+Place the div within your html document wherever you’d like it to display.
 
 Call the “rateify” method on your div:
-	<script type="text/javascript">
-	jQuery(document).ready(function() {
-		jQuery('#rates').rateify();							
-	});
-	</script>
+    <script type="text/javascript">
+    jQuery(document).ready(function() {
+        jQuery('#rates').rateify();							
+    });
+    </script>
 
 This script tag should go before the close of your <head> tag but after the scripts you imported above.
 
