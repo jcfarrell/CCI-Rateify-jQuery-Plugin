@@ -51,7 +51,7 @@ Customization
 The Rateify plugin is highly customizable. You can override the default settings of the plugin by passing parameters
 
 	jQuery('#rates').rateify({
-		'wwmWidth': 300,   		
+            'wwmWidth': 300,   		
     		'wwmHeaderColor': '#666',	
     		'wwmLogo': false,	  	
     		'wwmType': 'box',		
