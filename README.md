@@ -21,10 +21,11 @@ Include the three .js files at the close of your head tag.
 Place the div within your html document wherever you’d like it to display.
 
 Call the “rateify” method on your div:
+
     <script type="text/javascript">
-    jQuery(document).ready(function() {
-        jQuery('#rates').rateify();							
-    });
+        jQuery(document).ready(function() {
+            jQuery('#rates').rateify();							
+        });
     </script>
 
 This script tag should go before the close of your <head> tag but after the scripts you imported above.
