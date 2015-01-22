@@ -1,12 +1,11 @@
-
 .wwm_quotes{
 	padding: 10px !important;
 	background-color:#fff;
 	color:#333;
 	font-family:Arial, Helvetica, sans-serif;
 	font-weight:bold;	
-	font-size:10px;
 	overflow:hidden;
+	font-size:14px;
 }
 
 .wwm_quotes img{
@@ -14,8 +13,24 @@
 	margin-bottom:10px;
 }
 
+.wwm_quotes .marquee {
+  	width: 300px;
+ 	overflow: hidden;
+  	border:1px solid #ccc;
+}
 
-#wwm{
+.wwm_quotes ul{
+	padding:0px !important;
+	margin:0px !important;
+}
+
+.wwm_quotes li{
+	float:left;
+	margin-right:75px;
+	list-style:none;
+}
+
+.wwm_quotes #wwm{
 	font-size:10px;
 	color:#666;
 	text-align:left;
@@ -24,22 +39,22 @@
 	font-weight:normal;
 	padding-top:5px;
 }
-#wwm a{
+.wwm_quotes #wwm a{
 	color:#666;
 	text-decoration:none;
 }
-#wwm a:hover{
+.wwm_quotes #wwm a:hover{
 	color:#ccc;
 }
 
-.stockTable {
+.wwm_quotes .stockTable {
     font-size: 11px;
     border-color: #000000;
     border-bottom-width: 1px solid;
 	font-weight:bold;
 }
 
-.stockTable th {
+.wwm_quotes .stockTable th {
         color: #FFFFFF;
         background-color: #666 ;
         text-align:center;
@@ -48,7 +63,7 @@
 }
 
 
-.stockTable tr td {
+.wwm_quotes .stockTable tr td {
     height: 22px;
     border-color: #cccccc;
     border-width: 0px 0px 1px 0px;
@@ -57,52 +72,11 @@
 	padding:10px;
 }
 
+.wwm_quotes tr:nth-child(even) {background: #FFF}
+.wwm_quotes tr:nth-child(odd) {background: #fafafa}
 
-.RowColor0 {
-    background-color: #FFFFFF;
-}
-
-.RowColor1 {
-    background-color: #FFFFFF;
-}
-
-tr:nth-child(even) {background: #FFF}
-tr:nth-child(odd) {background: #fafafa}
-
-
-.instrument {
-    text-align: left;
-    padding-right:10px;
-    padding-left: 10px;
-}
-
-.bid {
-    text-align:center;
-    padding-right:10px;
-}
-.spread {
-    text-align:center;
-    padding-right:10px;
-	display:none;
-}
-.ask {
-    text-align:center;
-    padding-right:10px;
-}
-.open {
-    text-align:center;
-    padding-right:10px;
-	display:none;
-}
-
-.change {
-    text-align:right;
-    padding-right:10px;
-	display:none;
-}
-
-.time {
-    text-align:center;
-    padding-right:10px;
-	display:none;
+.wwm_quotes .logo-cube{
+	width:30px;
+	position: relative;
+	bottom: 10px;	
 }

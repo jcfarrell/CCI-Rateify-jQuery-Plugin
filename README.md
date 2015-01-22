@@ -9,6 +9,7 @@ Features
 * Set width or responsive width
 * Custom header colors
 * Option to display or remove WWM logo
+* Choose between box quotes or scrolling ticker
 * Select custom currency pairs
 * Insert multiple rates per page
 
@@ -21,10 +22,11 @@ Include the two .css files at the top of your document:
     <link rel="stylesheet" href="rateify.css" type="text/css" />
     <link rel="stylesheet" href="lib/jquery-ui.min.css" type="text/css" />
 
-Include the three .js files at the close of your head tag:
+Include the four .js files at the close of your head tag:
 
     <script src="lib/jquery-1.7.2.min.js"></script> 
     <script src="lib/jquery-ui.min.js"></script> 
+    <script src="lib/jquery.marquee.min.js"></script> 
     <script src="jquery.rateify.js" type="text/javascript"></script>
 
 Place the div within your html document wherever you’d like it to display:
@@ -59,6 +61,7 @@ The Rateify plugin is highly customizable. You can override the default settings
 	});
 
 * wwmWidth: Custom width as a number. Use 300 for 300px wide. For full width user ‘responsive’.
-* wwmHeaderColor: Custom color for header (hex value). Note: Font color will be white.
+* wwmHeaderColor: Custom color for header (hex value). Will also accept string value for common colors, ie 'blue'. Note: Font color will be white.
 * wwmLogo: true to display a WWM logo, false for no logo
+* wwmType: 'box' will display box quotes and 'scroll' will display a scrolling ticker
 * wwmPairs: The currency pairs you’d like this instance to subscribe to. Valid pairs are: Gold, Silver, USD/JPY, USD/CHF, GBP/USD, USD/CAD, EUR/USD, AUD/USD, GBP/JPY, UR/JPY

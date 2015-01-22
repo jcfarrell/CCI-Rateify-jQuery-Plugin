@@ -15,13 +15,12 @@
 ***/
 
 
-
 (function($) {
     $.fn.rateify = function(method) {
 		
         var defaults = {
 			 //DEFAULT SETTINGS
-			 wwmWidth: 300,
+			 wwmWidth: 800,
 			 wwmHeaderColor: '#666',
 			 wwmLogo: false,
 			 wwmType: 'box',
@@ -50,17 +49,30 @@
 			build_table: function(parent) {
 				//ADD QUOTE BOX
 				if(settings.wwmWidth == "responsive"){
-					var columWidth = "33%";
+					var columnWidth = "33%";
 					var fullWidth = "100%;";
 				}
 				else{
-					var columWidth = settings.wwmWidth / 3 + "px";
+					var columnWidth = settings.wwmWidth / 3 + "px";
 					var fullWidth = settings.wwmWidth + "px";
 				}
-				if(settings.wwmLogo){
-					parent.append("<div style='width: "+fullWidth+"'><center><img src='http://worldwidemarkets.co.uk/blog/wp-content/uploads/2013/12/WWMLogo.png'></center></div>");	
+				
+				
+				if(settings.wwmType == "box"){
+					if(settings.wwmLogo){
+					parent.append("<div style='width: "+fullWidth+"'><center><img src='lib/logo.png'></center></div>");	
 				}
-				parent.append("<table class='stockTable' cellSpacing='0' style='width: "+fullWidth+"'><thead><th class='instrument' style='background-color:"+settings.wwmHeaderColor+"; width:"+columWidth+";'>Instrument</th><th class='bid' style='background-color:"+settings.wwmHeaderColor+"; width:"+columWidth+";'>Bid</th><th class='ask' style='background-color:"+settings.wwmHeaderColor+"; width:"+columWidth+";'>Ask</th></thead><tbody class='qBody'></tbody></table>");
+					parent.append("<table class='stockTable' cellSpacing='0' style='width: "+fullWidth+"'><thead><th class='instrument' style='background-color:"+settings.wwmHeaderColor+"; width:"+columnWidth+";'>Instrument</th><th class='bid' style='background-color:"+settings.wwmHeaderColor+"; width:"+columnWidth+";'>Bid</th><th class='ask' style='background-color:"+settings.wwmHeaderColor+"; width:"+columnWidth+";'>Ask</th></thead><tbody class='qBody'></tbody></table>");
+					parent.append("<div id='wwm'>Powered by <a href='http://www.worldwidemarkets.com' target='_blank'>WorldWideMarkets - Online Trading</a></div>");
+				}
+				
+				else if (settings.wwmType == "scroll"){
+						parent.append("<div id='marquee' class='wwm_quotes'><ul class='qBody'><li id='wwm' style='color:"+settings.wwmHeaderColor+"'>Powered by <a href='http://www.worldwidemarkets.com' target='_blank' style='color:"+settings.wwmHeaderColor+"'>WorldWideMarkets - Online Trading</a></li></ul></div>");
+						parent.find('[class^="wwm_quotes"]').each(function(){
+							$(this).css("width", fullWidth);
+						});
+					
+				}
             },
 			
 			// function build_pairs
@@ -68,11 +80,51 @@
 			// @description obtains and sets settings based on DOM and CSS properties.
 			build_pairs: function(parent){
 					settings.wwmPairs.forEach(function(pair){
-						parent.find('[class^="qBody"]').each(function(){
-							var id = pair.replace("/", "");
-							$(this).append('<tr class="'+id+'"><td>'+pair+'</td><td id="'+id+'bid"></td><td id="'+id+'ask"></td></tr>');
-						});
+						if(settings.wwmType == "box"){
+							parent.find('[class^="qBody"]').each(function(){
+								var id = pair.replace("/", "");
+								$(this).append('<tr class="'+id+'"><td>'+pair+'</td><td id="'+id+'bid"></td><td id="'+id+'ask"></td></tr>');
+							});	
+						}
+						else if(settings.wwmType == "scroll"){
+							
+							parent.find('[class^="qBody"]').each(function(){
+								
+								var id = pair.replace("/", "");
+								$(this).append('<li class="'+id+'">'+pair+' <span id="'+id+'bid"></span> / <span id="'+id+'ask"></span></li>');
+								if(settings.wwmLogo){
+									$(this).append("<li><img class='logo-cube' src='lib/logo-cube.png'></li>");	
+								}
+							});	
+							
+							
+						}
 					});
+		
+			},
+			
+			// function start_ticker
+			// @param parent: jQuery reference of DOM object
+			// @description Starts the scrolling marquee of quotes
+			start_ticker: function(parent) {
+				console.log(parent);
+			parent.find('[class^="wwm_quotes"]').each(function(){
+							$(this).marquee({
+								//speed in milliseconds of the marquee
+								duration: 6000,
+								//gap in pixels between the tickers
+								gap: 10,
+								//time in milliseconds before the marquee will start animating
+								delayBeforeStart: 0,
+								//'left' or 'right'
+								direction: 'left',
+								//true or false - should the marquee be duplicated to show an effect of continues flow
+								duplicated: true,
+								pauseOnHover: true
+							});	
+						});
+			
+			 
 			},
 			
 			// function init_rates
@@ -132,7 +184,9 @@
 								  
 							   });
 							   
-							   parent.append("<div id='wwm'>Powered by <a href='http://www.worldwidemarkets.com' target='_blank'>WorldWideMarkets - Online Trading</a></div>");
+							  if(settings.wwmType == "scroll"){
+								helpers.start_ticker(parent);	
+							  }
 							 
                             },
 
