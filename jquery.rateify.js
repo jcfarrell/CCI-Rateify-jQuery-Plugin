@@ -20,11 +20,11 @@
 		
         var defaults = {
 			 //DEFAULT SETTINGS
-			 wwmWidth: 800,
+			 wwmWidth: 300,
 			 wwmHeaderColor: '#666',
-			 wwmLogo: false,
+			 wwmLogo: true,
 			 wwmType: 'box',
-			 wwmPairs: ['Gold', 'Silver', 'EUR/USD', 'USD/CAD'],
+			 wwmPairs: ['EUR/USD', 'USD/JPY', 'USD/CAD', 'GBP/USD'],
         }
 
         var settings = {}
