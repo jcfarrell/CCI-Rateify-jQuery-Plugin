@@ -1,15 +1,7 @@
-/***           
-                        _      _                   _                                _          _        
-                       | |    | |          ( )    | |                              | |        | |       
- __      __ ___   _ __ | |  __| |__      __ _   __| |  ___  _ __ ___    __ _  _ __ | | __ ___ | |_  ___ 
- \ \ /\ / //   \ | '__|| | /  ` |\ \ /\ / /| | /  ` | / _ \| '_ ` _ \  /  ` || '__|| |/ // _ \| __|/ __|
-  \ V  V /| ( ) || |   | || ( | | \ V  V / | || ( | ||  __/| | | | | || ( | || |   |   <|  __/| |_ \__ \
-   \_/\_/  \___/ |_|   |_| \__,_|  \_/\_/  |_| \__,_| \___||_| |_| |_| \__,_||_|   |_|\_\\___| \__||___/
-                                                                                                        
-                                                                                                        
-*  jQuery Plugin - WWM Rates "Rateify" Plugin
-*  Animated live currency rates provided by WorldWideMarkets
-*  version 0.1  |  2015.01.19
+/***                                  _      _                   _                                _          _                                                                                                             
+*  jQuery Plugin - CCI Rates "Rateify" Plugin
+*  Animated live currency rates provided by CCI
+*  version 0.1  |  2018.03.01
 *  author: Jonathan Farrell
 *
 ***/
@@ -20,11 +12,11 @@
 		
         var defaults = {
 			 //DEFAULT SETTINGS
-			 wwmWidth: 300,
-			 wwmHeaderColor: '#666',
-			 wwmLogo: true,
-			 wwmType: 'box',
-			 wwmPairs: ['EUR/USD', 'USD/JPY', 'USD/CAD', 'GBP/USD'],
+			 cciWidth: 300,
+			 cciHeaderColor: '#333',
+			 cciLogo: true,
+			 cciType: 'box',
+			 cciPairs: ['BTC', 'ETH', 'XRP', 'BCH'],
         }
 
         var settings = {}
@@ -37,7 +29,9 @@
 					helpers.remove_default($element);
 					helpers.build_table($element);
 					helpers.build_pairs($element);
+					helpers.init_cci();
 					helpers.init_rates($element);
+					helpers.start_ticker($element);
                 });
             }
         }
@@ -48,27 +42,28 @@
 			// @description Sets up the HTML with Correct DOM elements
 			build_table: function(parent) {
 				//ADD QUOTE BOX
-				if(settings.wwmWidth == "responsive"){
+				if(settings.cciWidth == "responsive"){
 					var columnWidth = "33%";
 					var fullWidth = "100%;";
 				}
 				else{
-					var columnWidth = settings.wwmWidth / 3 + "px";
-					var fullWidth = settings.wwmWidth + "px";
+					var columnWidth = settings.cciWidth / 3 + "px";
+					var fullWidth = settings.cciWidth + "px";
 				}
 				
 				
-				if(settings.wwmType == "box"){
-					if(settings.wwmLogo){
+				if(settings.cciType == "box"){
+					if(settings.cciLogo){
 					parent.append("<div style='width: "+fullWidth+"'><center><img src='lib/logo.png'></center></div>");	
 				}
-					parent.append("<table class='stockTable' cellSpacing='0' style='width: "+fullWidth+"'><thead><th class='instrument' style='background-color:"+settings.wwmHeaderColor+"; width:"+columnWidth+";'>Instrument</th><th class='bid' style='background-color:"+settings.wwmHeaderColor+"; width:"+columnWidth+";'>Bid</th><th class='ask' style='background-color:"+settings.wwmHeaderColor+"; width:"+columnWidth+";'>Ask</th></thead><tbody class='qBody'></tbody></table>");
-					parent.append("<div id='wwm'>Powered by <a href='http://www.worldwidemarkets.com' target='_blank'>WorldWideMarkets - Online Trading</a></div>");
+					parent.append("<table class='cciTable' cellSpacing='0' style='width: "+fullWidth+"'><thead><th><b>CCI</b>10</th><th><b>CCI</b>25</th><th><b>CCI</b>50</th></thead><tr class='cci'><td id='cci10price'></td><td id='cci25price'></td><td id='cci50price'></td></tr></table>");
+					parent.append("<table class='stockTable' cellSpacing='0' style='width: "+fullWidth+"'><thead><th class='instrument' style='background-color:"+settings.cciHeaderColor+"; width:"+columnWidth+";'>Symbol</th><th class='price' style='background-color:"+settings.cciHeaderColor+"; width:"+columnWidth+";'>Price</th><th class='change' style='background-color:"+settings.cciHeaderColor+"; width:"+columnWidth+";'>Change (24h)</th></thead><tbody class='qBody'></tbody></table>");
+					parent.append("<div id='cci'>Powered by <a href='http://www.thecryptocoinindex.com' target='_blank'>Crypto Coin Index | www.thecryptopcoinindex.com</a></div>");
 				}
 				
-				else if (settings.wwmType == "scroll"){
-						parent.append("<div id='marquee' class='wwm_quotes'><ul class='qBody'><li id='wwm' style='color:"+settings.wwmHeaderColor+"'>Powered by <a href='http://www.worldwidemarkets.com' target='_blank' style='color:"+settings.wwmHeaderColor+"'>WorldWideMarkets - Online Trading</a></li></ul></div>");
-						parent.find('[class^="wwm_quotes"]').each(function(){
+				else if (settings.cciType == "scroll"){
+						parent.append("<div id='marquee' class='cci_quotes'><ul class='qBody'><li id='cci' style='color:"+settings.cciHeaderColor+"'>Powered by <a href='http://www.thecryptocoinindex.com.com' target='_blank' style='color:"+settings.cciHeaderColor+"'>Crypto Coin Index | www.thecryptopcoinindex.com</a></li><li class='cci_scroll'><b>CCI</b>10: <span id='cci10price'></span></li><li class='cci_scroll'><b>CCI</b>25: <span id='cci25price'></span></li><li class='cci_scroll'><b>CCI</b>50: <span id='cci50price'></span></li></ul></div>");
+						parent.find('[class^="cci_quotes"]').each(function(){
 							$(this).css("width", fullWidth);
 						});
 					
@@ -78,29 +73,25 @@
 			// function build_pairs
 			// @param parent: jQuery reference of DOM object
 			// @description obtains and sets settings based on DOM and CSS properties.
-			build_pairs: function(parent){
-					settings.wwmPairs.forEach(function(pair){
-						if(settings.wwmType == "box"){
-							parent.find('[class^="qBody"]').each(function(){
-								var id = pair.replace("/", "");
-								$(this).append('<tr class="'+id+'"><td>'+pair+'</td><td id="'+id+'bid"></td><td id="'+id+'ask"></td></tr>');
-							});	
-						}
-						else if(settings.wwmType == "scroll"){
-							
-							parent.find('[class^="qBody"]').each(function(){
-								
-								var id = pair.replace("/", "");
-								$(this).append('<li class="'+id+'">'+pair+' <span id="'+id+'bid"></span> / <span id="'+id+'ask"></span></li>');
-								if(settings.wwmLogo){
-									$(this).append("<li><img class='logo-cube' src='lib/logo-cube.png'></li>");	
-								}
-							});	
-							
-							
-						}
-					});
-		
+			build_pairs: function(parent){	
+				settings.cciPairs.forEach(function(pair){
+					if(settings.cciType == "box"){
+						parent.find('[class^="qBody"]').each(function(){
+							var id = pair.replace("/", "");
+							$(this).append('<tr class="'+id+'"><td>'+pair+'</td><td id="'+id+'price"></td><td id="'+id+'change"></td></tr>');
+						});	
+					}
+					else if(settings.cciType == "scroll"){
+						parent.find('[class^="qBody"]').each(function(){
+							var id = pair.replace("/", "");
+							$(this).append('<li class="'+id+'">'+pair+': <span id="'+id+'price"></span> / <span id="'+id+'change"></span></li>');
+							if(settings.cciLogo){
+								$(this).append("<li><img class='logo-cube' src='lib/logo.png'></li>");	
+							}
+						});	
+						
+					}
+				});
 			},
 			
 			// function start_ticker
@@ -108,7 +99,7 @@
 			// @description Starts the scrolling marquee of quotes
 			start_ticker: function(parent) {
 				console.log(parent);
-			parent.find('[class^="wwm_quotes"]').each(function(){
+			parent.find('[class^="cci_quotes"]').each(function(){
 							$(this).marquee({
 								//speed in milliseconds of the marquee
 								duration: 6000,
@@ -126,128 +117,87 @@
 			
 			 
 			},
+
+			// function cci_pricing
+			// @param indexNum: variable for specific cci index
+			// @description Calculates cci index
+			cci_pricing: function(indexNum){
+		    	var url="https://api.coinmarketcap.com/v1/ticker/?limit="+indexNum;
+					
+		    	jQuery.getJSON( url, function( data ) {
+		        var cci_price = 0;
+		        var cci_change = 0;
+		        //jQuery("#recentTimestamp").html(new Date($.now()));
+		        jQuery.each( data, function( key, val ) {
+		          cci_price += parseFloat(val.market_cap_usd);
+		        });
+						
+						var baseDiv = 2;
+						if(indexNum == 10){baseDiv = 1270050924;}
+						else if(indexNum == 25){baseDiv = 1352400115;}
+						else if(indexNum == 50){baseDiv = 1399416738;}
+						
+		        cci_price = (cci_price / baseDiv).toFixed(2);
+		        cci_price = "$"+cci_price.replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,");
+				jQuery("#cci"+indexNum+"price").html(cci_price);
+						
+		      	});
+ 		 	},
+
+ 		 	// function init_cci
+			// @param none
+			// @description Setup cci indexes
+			init_cci: function(){
+				helpers.cci_pricing(10);
+				helpers.cci_pricing(25);
+				helpers.cci_pricing(50);
+			},
 			
 			// function init_rates
 			// @param parent: jQuery reference of DOM object
 			// @description Sets up actions and to events
 			init_rates: function(parent) {
-				
-				$.when(
-					$.getScript("https://reports.onlineglobalmarkets.com/TabWebStreamer/JavaScript/fm.js"),
-					$.getScript("https://reports.onlineglobalmarkets.com/TabWebStreamer/JavaScript/fm.websync.js"),
-					$.Deferred(function( deferred ){
-						$( deferred.resolve );
-					})
-				).done(function(){
-				var client = new fm.websync.client('https://reports.onlineglobalmarkets.com/TabWebStreamer/websync.ashx');
-				client.connect( {
 
-                            onSuccess: function(e){
-								//alert("Connected to WebSync");
-                            },
+				jQuery.getJSON( "https://api.coinmarketcap.com/v1/ticker/", function( data ) {
 
-                            onFailure: function(e){
-                                parent.append("Can't Connect to WebSync");
-                                e.setRetry(false);
-                            },
+			  		//jQuery("#recentTimestamp").html(new Date(jQuery.now()));
 
-                            onStreamFailure: function(e){
-                                parent.append("Streaming Failure");
-                            }
-                        });
-
-                        client.subscribe({
-
-                            channel: '/MARKET_DATA_GROUP_01',
-
-                            onSuccess: function (e) {
-                               
-							   var arr = JSON.parse(e.getMetaJson()).split("|");
-							   arr.forEach(function(pair){
-								  var deets = pair.split(",");
-								  var pairID = deets[0].replace("/","");
-								  var bid = deets[1];
-								  var ask = deets[2];
-								  
-								  if(deets[0] == "Gold" && deets.length > 4){
-									  bid = deets[1]+","+deets[2];
-									  ask = deets[3]+","+deets[4]
-								  }
-								  
-								  parent.find('[id^="'+pairID+'bid"]').each(function(){
-									  $(this).html(bid);
-								  });
-								  
-								  parent.find('[id^="'+pairID+'ask"]').each(function(){
-									  $(this).html(ask);
-								  });
-								  
-							   });
-							   
-							  if(settings.wwmType == "scroll"){
-								helpers.start_ticker(parent);	
-							  }
-							 
-                            },
-
-                            onFailure: function (e) {
-                                parent.append("Subscription Failure");
-                            },
-                            onReceive: onMessage
-                        });
-
-				   function onMessage(message){
-						
-				       var arr = message.getData().split("|");
-					   arr.forEach(function(pair){
-						  var deets = pair.split(",");
-						  var pairID = deets[0].replace("/","");
-						  var bid = deets[1];
-						  var ask = deets[2];
-						  
-						  if(deets[0] == "Gold" && deets.length > 4){
-							  bid = deets[1]+","+deets[2];
-							  ask = deets[3]+","+deets[4];
-							  
-							  var change = parseFloat(bid.replace(",","")) - parseFloat($("#"+pairID+"bid").html().replace(",",""));
-						  }
-						  else{
-						 	 var change = bid - parseFloat($("#"+pairID+"bid").html());
-						  }
-						  
-							if(change > 0){
-								$("."+pairID).animate({color: 'green'}, 600 );
-								setTimeout(function(){$("."+pairID).animate({color: '#333'}, 600 );}, 2500);
-							}
-							else if(change < 0){
-								$("."+pairID).animate({color: 'red'}, 600 );
-								setTimeout(function(){$("."+pairID).animate({color: '#333'}, 600 );}, 2500);
-								
+					//set crypto pricing
+					  jQuery.each( data, function( key, val ) {
+					  	var price = parseFloat(val.price_usd).toFixed(2);
+					  	price = "$"+price.replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,");
+							var market_cap = parseFloat(val.market_cap_usd).toFixed(2);
+							market_cap = "$"+market_cap.replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,");	
+							var percent_change_24h = parseFloat(val.percent_change_24h).toFixed(2);			
+							var change_hour = "black";
+							var change_day = "black";
+							if(val.percent_change_1h > 0){
+								 change_hour = "green";
 							}
 							else{
-								$("."+pairID).animate({color: '#333'}, 600 );
+								change_hour = "red";
 							}
-						  
-						  parent.find('[id^="'+pairID+'bid"]').each(function(){
-							  $(this).html(bid);
-						  });
-						  
-						  parent.find('[id^="'+pairID+'ask"]').each(function(){
-							  $(this).html(ask);
-						  });
-							   });
-	
-           			}
-				});
+							if(val.percent_change_24h > 0){
+								 change_day = "green";
+							}
+							else{
+								change_day = "red";
+							}
+
+							jQuery("#"+val.symbol+"price").html(price);
+							jQuery("#"+val.symbol+"change").html("<span style='color:"+change_day+";'>"+percent_change_24h+"%</span>");
+					  });
+					});
+				
 			},
 			
 			// function remove_default
 			// @param parent: jQuery reference of DOM object
 			// @description Removes the DOM element with the panel that is intended to appear when the plugin doesn't load.
 			remove_default: function(parent){
-				parent.find('#defaultwwm').empty();
-				parent.find('#defaultwwm').remove();
-				parent.addClass('wwm_quotes');
+				parent.find('#defaultcci').empty();
+				parent.find('#defaultcci').remove();
+				parent.addClass('cci_quotes');
 			},
 			
         }

@@ -1,14 +1,14 @@
 Rateify
 =======
 
-Animated live currency rates provided by WorldWideMarkets.
+Animated crypto currency rates provided by Crypto Coin Index.
 
 Features
 -------- 
 * Customizable
 * Set width or responsive width
 * Custom header colors
-* Option to display or remove WWM logo
+* Option to display or remove CCI logo
 * Choose between box quotes or scrolling ticker
 * Select custom currency pairs
 * Insert multiple rates per page
@@ -32,7 +32,7 @@ Include the four .js files at the close of your head tag:
 Place the div within your html document wherever you’d like it to display:
 
     <div id="rates">
-        <noscript><div id="defaultwwm">Display this panel when javascript isn't loaded</div></noscript>
+        <noscript><div id="defaultcci">Display this panel when javascript isn't loaded</div></noscript>
     </div>
 
 Call the “rateify” method on your div:
@@ -53,15 +53,15 @@ Customization
 The Rateify plugin is highly customizable. You can override the default settings of the plugin by passing parameters
 
 	jQuery('#rates').rateify({
-            'wwmWidth': 300,   		
-    		'wwmHeaderColor': '#666',	
-    		'wwmLogo': false,	  	
-    		'wwmType': 'box',		
-    		'wwmPairs': ['Gold', 'Silver', 'EUR/USD', 'USD/CAD']
+            'cciWidth': 300,   		
+    		'cciHeaderColor': '#666',	
+    		'cciLogo': false,	  	
+    		'cciType': 'box',		
+    		'cciPairs': ['BTC', 'ETH', 'XRP', 'BCH']
 	});
 
-* wwmWidth: Custom width as a number. Use 300 for 300px wide. For full width user ‘responsive’.
-* wwmHeaderColor: Custom color for header (hex value). Will also accept string value for common colors, ie 'blue'. Note: Font color will be white.
-* wwmLogo: true to display a WWM logo, false for no logo
-* wwmType: 'box' will display box quotes and 'scroll' will display a scrolling ticker
-* wwmPairs: The currency pairs you’d like this instance to subscribe to. Valid pairs are: Gold, Silver, USD/JPY, USD/CHF, GBP/USD, USD/CAD, EUR/USD, AUD/USD, GBP/JPY, UR/JPY
+* cciWidth: Custom width as a number. Use 300 for 300px wide. For full width user ‘responsive’.
+* cciHeaderColor: Custom color for header (hex value). Will also accept string value for common colors, ie 'blue'. Note: Font color will be white.
+* cciLogo: true to display a CCI logo, false for no logo
+* cciType: 'box' will display box quotes and 'scroll' will display a scrolling ticker
+* cciPairs: The cryptos you’d like this instance to subscribe to.

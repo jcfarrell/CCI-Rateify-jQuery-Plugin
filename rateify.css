@@ -1,4 +1,4 @@
-.wwm_quotes{
+.cci_quotes{
 	padding: 10px !important;
 	background-color:#fff;
 	color:#333;
@@ -8,62 +8,67 @@
 	font-size:14px;
 }
 
-.wwm_quotes img{
+.cci_quotes img{
 	width:225px;
 	margin-bottom:10px;
 }
 
-.wwm_quotes .marquee {
+.cci_quotes .marquee {
   	width: 300px;
  	overflow: hidden;
   	border:1px solid #ccc;
 }
 
-.wwm_quotes ul{
+.cci_quotes ul{
 	padding:0px !important;
 	margin:0px !important;
 }
 
-.wwm_quotes li{
+.cci_quotes li{
 	float:left;
-	margin-right:75px;
+	margin-right:50px;
 	list-style:none;
 }
 
-.wwm_quotes #wwm{
+.cci_scroll{
+	border: 1px solid #ccc;
+    padding: 5px;
+    margin-top: -5px;
+}
+
+.cci_quotes #cci{
 	font-size:10px;
 	color:#666;
 	text-align:left;
 	font-family:Arial, Helvetica, sans-serif;
-	margin-left:17px;
 	font-weight:normal;
 	padding-top:5px;
 }
-.wwm_quotes #wwm a{
+.cci_quotes #cci a{
 	color:#666;
 	text-decoration:none;
 }
-.wwm_quotes #wwm a:hover{
+.cci_quotes #cci a:hover{
 	color:#ccc;
 }
 
-.wwm_quotes .stockTable {
+.cci_quotes .stockTable, .cci_quotes .cciTable {
     font-size: 11px;
     border-color: #000000;
     border-bottom-width: 1px solid;
 	font-weight:bold;
 }
 
-.wwm_quotes .stockTable th {
-        color: #FFFFFF;
-        background-color: #666 ;
-        text-align:center;
-		padding:5px;
-		border-right:1px #fafafa solid;
+.cci_quotes .stockTable th {
+    color: #FFFFFF;
+    background-color: #666 ;
+    text-align:center;
+    padding:5px;
+	border-right:1px #fafafa solid;
 }
 
 
-.wwm_quotes .stockTable tr td {
+.cci_quotes .stockTable tr td, .cci_quotes .cciTable tr td{
     height: 22px;
     border-color: #cccccc;
     border-width: 0px 0px 1px 0px;
@@ -71,12 +76,28 @@
 	text-align:center;
 	padding:10px;
 }
+.cci_quotes .cciTable{
+	border:none;
+}
+.cci_quotes .cciTable th{
+	font-weight: normal;
+	font-size:16px;
+	padding-top:10px;
+	background:#333;
+	color:white;
+}
 
-.wwm_quotes tr:nth-child(even) {background: #FFF}
-.wwm_quotes tr:nth-child(odd) {background: #fafafa}
+.cci_quotes .cciTable tr td{
+	background:#333;
+	color:white;
+	font-weight: normal;
+}
 
-.wwm_quotes .logo-cube{
-	width:30px;
+.cci_quotes tr:nth-child(even) {background: #FFF}
+.cci_quotes tr:nth-child(odd) {background: #fafafa}
+
+.cci_quotes .logo-cube{
+	width:60px;
 	position: relative;
-	bottom: 10px;	
+	bottom: 5px;	
 }
